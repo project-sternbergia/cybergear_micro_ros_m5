@@ -93,6 +93,8 @@ cd cybergear_micro_ros_m5/scripts
 python3 cybergear_example.py
 ```
 
+![image](docs/img/sin_wave_example.gif)
+
 ## ROS2 Parameters
 
 Please be extremely cautious when changing control gains, as there is a possibility that Cybergear may go out of control. We will not take responsibility for any injuries incurred.
