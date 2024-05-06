@@ -6,6 +6,8 @@ This package is for controlling Cybergear on M5Stack. By using Micro-ROS, you ca
 
 ## Hardware Components
 
+![image](docs/img/hw_connection.jpg)
+
 * [Xiaomi Cybergear](https://www.mi.com/cyber-gear)
 * [M5Stack Basic V2.7](https://shop.m5stack.com/collections/m5-controllers/products/esp32-basic-core-lot-development-kit-v2-7)
 * [LAN Module W5500 with PoE V12](https://shop.m5stack.com/products/lan-module-w5500-with-poe-v12)
