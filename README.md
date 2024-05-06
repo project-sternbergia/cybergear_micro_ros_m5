@@ -1,6 +1,6 @@
 # Cybergear ROS2 Controller
 
-## Packet Summary
+## Package Summary
 
 This package is for controlling Cybergear on M5Stack. By using Micro-ROS, you can control multiple Cybergears via Ethernet (RJ45)
 
@@ -35,7 +35,9 @@ docker run -it --rm -v $(pwd):/project --env MICROROS_LIBRARY_FOLDER=extras micr
 
 Build and upload binary to m5stack via vscode.
 
-## Sofware Setup
+## Setup Firmware
+
+TBD
 
 ## How to Use
 
@@ -86,6 +88,8 @@ ros2 service call /cgc_node/control_power std_srvs/srv/SetBool data:\ true
 Execute sample code for ros2.
 
 ```bash
+source /opt/ros/$ROS_DISTRO/setup.bash
+cd cybergear_micro_ros_m5/scripts
 python3 xxxxx.py
 ```
 
@@ -93,18 +97,18 @@ python3 xxxxx.py
 
 Please be extremely cautious when changing control gains, as there is a possibility that Cybergear may go out of control. We will not take responsibility for any injuries incurred.
 
-| name            | desc                                                                                                      | default     | min | max |
-| --------------- | --------------------------------------------------------------------------------------------------------- | ----------- | --- | --- |
-| run_mode        | The run mode of cybergear. cybergear support 4-control mode, motion(0), position(1), speed(2), current(3) | position(1) |     |     |
-| limit_speed     | Cybergear limit speed [rad/sec]                                                                           |             |     |     |
-| limit_current   | Cybergear limit current [A]                                                                               |             |     |     |
-| limit_torque    | Cybergear limit torque [Nm]                                                                               |             |     |     |
-| loc_kp          | Cybergear position control p-gain                                                                         |             |     |     |
-| spd_kp          | Cybergear speed control p-gain                                                                            |             |     |     |
-| spd_ki          | Cybergear speed control i-gain                                                                            |             |     |     |
-| cur_kp          | Cybergear current control p-gain                                                                          |             |     |     |
-| cur_ki          | Cybergear current control i-gain                                                                          |             |     |     |
-| cur_filter_gain | TBD                                                                                                       |             |     |     |
+| name            | desc                                                                                                      | default     | min | max   |
+| --------------- | --------------------------------------------------------------------------------------------------------- | ----------- | --- | ----- |
+| run_mode        | The run mode of cybergear. cybergear support 4-control mode, motion(0), position(1), speed(2), current(3) | position(1) | 0   | 3     |
+| limit_speed     | Cybergear limit speed [rad/sec]                                                                           | 2.0         | 0.0 | 30.0  |
+| limit_current   | Cybergear limit current [A]                                                                               | 27.0        | 0.0 | 27.0  |
+| limit_torque    | Cybergear limit torque [Nm]                                                                               | 12.0        | 0.0 | 12.0  |
+| loc_kp          | Cybergear position control p-gain                                                                         | 30.0        | 0.0 | 100.0 |
+| spd_kp          | Cybergear speed control p-gain                                                                            | 2.0         | 0.0 | 50.0  |
+| spd_ki          | Cybergear speed control i-gain                                                                            | 0.002       | 0.0 | 0.05  |
+| cur_kp          | Cybergear current control p-gain                                                                          | 0.125       | 0.0 | 1.0   |
+| cur_ki          | Cybergear current control i-gain                                                                          | 0.0158      | 0.0 | 0.05  |
+| cur_filter_gain | TBD                                                                                                       | 0.1         | 0.0 | 1.0   |
 
 
 ## ROS2 Interfaces
@@ -112,6 +116,8 @@ Please be extremely cautious when changing control gains, as there is a possibil
 
 ## References
 
+* [Xiaomi Cybergear 微电机使用说明书](https://web.vip.miui.com/page/info/mio/mio/detail?postId=40233100)
+* [project-sternbergia/cybergear_m5](https://github.com/project-sternbergia/cybergear_m5)
 
 ## License
 
