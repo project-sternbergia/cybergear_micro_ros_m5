@@ -14,9 +14,15 @@ This package is for controlling Cybergear on M5Stack. By using Micro-ROS, you ca
 * [XT30(2+2)-F](https://www.china-amass.com/product/contain/1Yf5h7G4u1927079)
 * [Grove Cable](https://www.seeedstudio.com/Grove-Universal-4-Pin-Buckled-20cm-Cable-5-PCs-pack.html)
 
+## Dev Environments
+
+* Ubuntu 22.04
+* ROS2 humble
+* PlatformIO
+
 ## How to Build
 
-Clone this repository and open this repository with vscode whitch is installed platform plugin.
+Clone this repository and open this repository with vscode whitch is installed [PlatformIO IDE plugin](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide).
 
 ```bash
 git clone git@github.com:chikuta/cybergear_micro_ros_m5.git
