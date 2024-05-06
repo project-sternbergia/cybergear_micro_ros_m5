@@ -37,9 +37,21 @@ Build and upload binary to m5stack via vscode.
 
 ## Configure Firmware
 
-TBD
+Please modify the following source code to fit your development environment.
+
+Network config
+
+https://github.com/project-sternbergia/cybergear_micro_ros_m5/blob/bc1ba27ceba255b1c0d0b23f20ba78f7a41c5d8a/src/cybergear_ros2_controller.ino#L71-L74
+
+Cybergear config
+
+https://github.com/project-sternbergia/cybergear_micro_ros_m5/blob/bc1ba27ceba255b1c0d0b23f20ba78f7a41c5d8a/src/cybergear_ros2_controller.ino#L34-L36
+
 
 ## How to Use
+
+Before running the following demo, please ensure that the firmware of Cybergear is updated to the latest version.
+Also, set the CAN IDs of the Cybergear to 0x7E and 0x7F for use in the demo.
 
 Launch micro-ros-agent using docker.
 
