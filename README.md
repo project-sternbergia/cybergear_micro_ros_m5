@@ -35,7 +35,7 @@ docker run -it --rm -v $(pwd):/project --env MICROROS_LIBRARY_FOLDER=extras micr
 
 Build and upload binary to m5stack via vscode.
 
-## Setup Firmware
+## Configure Firmware
 
 TBD
 
@@ -90,7 +90,7 @@ Execute sample code for ros2.
 ```bash
 source /opt/ros/$ROS_DISTRO/setup.bash
 cd cybergear_micro_ros_m5/scripts
-python3 xxxxx.py
+python3 cybergear_example.py
 ```
 
 ## ROS2 Parameters
@@ -113,6 +113,7 @@ Please be extremely cautious when changing control gains, as there is a possibil
 
 ## ROS2 Interfaces
 
+TBD
 
 ## References
 
