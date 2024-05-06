@@ -19,7 +19,7 @@ This package is for controlling Cybergear on M5Stack. By using Micro-ROS, you ca
 Clone this repository and open this repository with vscode whitch is installed platform plugin.
 
 ```bash
-git clone git@github.com:project-sternbergia/cybergear_micro_ros_m5.git
+git clone git@github.com:chikuta/cybergear_micro_ros_m5.git
 code cybergear_micro_ros_m5
 ```
 
@@ -28,7 +28,7 @@ We need to modify and build micro_ros_arduino repository because resolve constra
 ```bash
 cd cybergear_micro_ros_m5
 cd .pio/libdeps/m5stack-core-esp32/micro_ros_arduino
-patch -p1 ../../../../patch/colcon.meta.patch
+patch -p1 < ../../../../patch/colcon.meta.patch
 docker pull microros/micro_ros_static_library_builder:humble
 docker run -it --rm -v $(pwd):/project --env MICROROS_LIBRARY_FOLDER=extras microros/micro_ros_static_library_builder:humble -p esp32
 ```
@@ -41,11 +41,11 @@ Please modify the following source code to fit your development environment.
 
 Network config
 
-https://github.com/project-sternbergia/cybergear_micro_ros_m5/blob/bc1ba27ceba255b1c0d0b23f20ba78f7a41c5d8a/src/cybergear_ros2_controller.ino#L71-L74
+https://github.com/chikuta/cybergear_micro_ros_m5/blob/116c6be76c9e46680a7b1674dc24a83a72f0d14e/src/cybergear_ros2_controller.ino#L71-L74
 
 Cybergear config
 
-https://github.com/project-sternbergia/cybergear_micro_ros_m5/blob/bc1ba27ceba255b1c0d0b23f20ba78f7a41c5d8a/src/cybergear_ros2_controller.ino#L34-L36
+https://github.com/chikuta/cybergear_micro_ros_m5/blob/116c6be76c9e46680a7b1674dc24a83a72f0d14e/src/cybergear_ros2_controller.ino#L34-L36
 
 
 ## How to Use
@@ -106,6 +106,13 @@ python3 cybergear_example.py
 ```
 
 ![image](docs/img/sin_wave_example.gif)
+
+
+Disable cybergear controller
+
+```bash
+ros2 service call /cgc_node/control_power std_srvs/srv/SetBool data:\ false
+```
 
 ## ROS2 Parameters
 
