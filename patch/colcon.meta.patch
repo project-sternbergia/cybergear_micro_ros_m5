@@ -1,0 +1,22 @@
+diff --git a/extras/library_generation/colcon.meta b/extras/library_generation/colcon.meta
+index 5bb8eff8..e8c9d29a 100755
+--- a/extras/library_generation/colcon.meta
++++ b/extras/library_generation/colcon.meta
+@@ -17,7 +17,7 @@
+                 "-DRCL_COMMAND_LINE_ENABLED=OFF",
+                 "-DRCL_LOGGING_ENABLED=OFF"
+             ]
+-        }, 
++        },
+         "rcutils": {
+             "cmake-args": [
+                 "-DENABLE_TESTING=OFF",
+@@ -43,7 +43,7 @@
+                 "-DRMW_UXRCE_MAX_NODES=1",
+                 "-DRMW_UXRCE_MAX_PUBLISHERS=10",
+                 "-DRMW_UXRCE_MAX_SUBSCRIPTIONS=5",
+-                "-DRMW_UXRCE_MAX_SERVICES=1",
++                "-DRMW_UXRCE_MAX_SERVICES=7",
+                 "-DRMW_UXRCE_MAX_CLIENTS=1",
+                 "-DRMW_UXRCE_MAX_HISTORY=4",
+                 "-DRMW_UXRCE_TRANSPORT=custom"
