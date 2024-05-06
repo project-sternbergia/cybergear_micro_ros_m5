@@ -54,7 +54,7 @@ std::unordered_map<std::string, MotorCommand> motor_commands;
 struct MotorParam
 {
   uint8_t id;
-  uint8_t run_mode = MODE_CURRENT;
+  uint8_t run_mode = MODE_POSITION;
   float limit_torque = DEFAULT_TORQUE_LIMIT;
   float limit_speed = DEFAULT_VELOCITY_LIMIT;
   float limit_current = DEFAULT_CURRENT_LIMIT;
@@ -157,14 +157,16 @@ void joint_command_callback(const void * msgin)
   for (uint8_t idx = 0; idx < msg->name.size; ++idx) {
     // check joint name
     const std::string name = micro_ros_string_utilities_get_c_str(msg->name.data[idx]);
-    if (motor_commands.find(name) == motor_commands.end()) continue;
+    if (motor_commands.find(name) == motor_commands.end()) {
+      continue;
+    }
 
     // set joint command
     if (msg->position.size > idx) {
       motor_commands[name].position = msg->position.data[idx];
     }
     if (msg->velocity.size > idx) {
-      motor_commands[name].velocity = msg->effort.data[idx];
+      motor_commands[name].velocity = msg->velocity.data[idx];
     }
     if (msg->effort.size > idx) {
       motor_commands[name].effort = msg->effort.data[idx];
@@ -239,7 +241,7 @@ void init_ros_param_server()
     {
       std::string param_name = joint_names[idx] + ".run_mode";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_INT);
-      rclc_parameter_set_int(&param_server, param_name.c_str(), MODE_CURRENT);
+      rclc_parameter_set_int(&param_server, param_name.c_str(), param.run_mode);
       rclc_add_parameter_constraint_integer(
         &param_server, param_name.c_str(), MODE_MOTION, MODE_CURRENT, 1);
     }
@@ -247,7 +249,7 @@ void init_ros_param_server()
     {
       std::string param_name = joint_names[idx] + ".limit_torque";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_DOUBLE);
-      rclc_parameter_set_double(&param_server, param_name.c_str(), DEFAULT_TORQUE_LIMIT);
+      rclc_parameter_set_double(&param_server, param_name.c_str(), param.limit_torque);
       rclc_add_parameter_constraint_double(
         &param_server, param_name.c_str(), LIMIT_TORQUE_MIN, LIMIT_TORQUE_MAX, 0.1);
     }
@@ -255,7 +257,7 @@ void init_ros_param_server()
     {
       std::string param_name = joint_names[idx] + ".limit_speed";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_DOUBLE);
-      rclc_parameter_set_double(&param_server, param_name.c_str(), DEFAULT_VELOCITY_LIMIT);
+      rclc_parameter_set_double(&param_server, param_name.c_str(), param.limit_speed);
       rclc_add_parameter_constraint_double(
         &param_server, param_name.c_str(), LIMIT_SPD_MIN, LIMIT_SPD_MAX, 0.1);
     }
@@ -263,14 +265,14 @@ void init_ros_param_server()
     {
       std::string param_name = joint_names[idx] + ".limit_current";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_DOUBLE);
-      rclc_parameter_set_double(&param_server, param_name.c_str(), DEFAULT_CURRENT_LIMIT);
+      rclc_parameter_set_double(&param_server, param_name.c_str(), param.limit_current);
       rclc_add_parameter_constraint_double(&param_server, param_name.c_str(), 0.0, IQ_MAX, 0.1);
     }
 
     {
       std::string param_name = joint_names[idx] + ".cur_kp";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_DOUBLE);
-      rclc_parameter_set_double(&param_server, param_name.c_str(), DEFAULT_CURRENT_KP);
+      rclc_parameter_set_double(&param_server, param_name.c_str(), param.cur_kp);
       rclc_add_parameter_constraint_double(
         &param_server, param_name.c_str(), CUR_KP_MIN, 1.0, 0.001);
     }
@@ -278,7 +280,7 @@ void init_ros_param_server()
     {
       std::string param_name = joint_names[idx] + ".cur_ki";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_DOUBLE);
-      rclc_parameter_set_double(&param_server, param_name.c_str(), 0.0158);
+      rclc_parameter_set_double(&param_server, param_name.c_str(), param.cur_ki);
       rclc_add_parameter_constraint_double(
         &param_server, param_name.c_str(), CUR_KI_MIN, 0.1, 0.0001);
     }
@@ -286,7 +288,7 @@ void init_ros_param_server()
     {
       std::string param_name = joint_names[idx] + ".loc_kp";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_DOUBLE);
-      rclc_parameter_set_double(&param_server, param_name.c_str(), DEFAULT_POSITION_KP);
+      rclc_parameter_set_double(&param_server, param_name.c_str(), param.loc_kp);
       rclc_add_parameter_constraint_double(
         &param_server, param_name.c_str(), LOC_KP_MIN, 100.0, 0.1);
     }
@@ -294,21 +296,21 @@ void init_ros_param_server()
     {
       std::string param_name = joint_names[idx] + ".spd_kp";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_DOUBLE);
-      rclc_parameter_set_double(&param_server, param_name.c_str(), DEFAULT_VELOCITY_KP);
+      rclc_parameter_set_double(&param_server, param_name.c_str(), param.spd_kp);
       rclc_add_parameter_constraint_double(&param_server, param_name.c_str(), 0.0, 50.0, 0.1);
     }
 
     {
       std::string param_name = joint_names[idx] + ".spd_ki";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_DOUBLE);
-      rclc_parameter_set_double(&param_server, param_name.c_str(), 0.002);
+      rclc_parameter_set_double(&param_server, param_name.c_str(), param.spd_ki);
       rclc_add_parameter_constraint_double(&param_server, param_name.c_str(), 0.0, 0.05, 0.001);
     }
 
     {
       std::string param_name = joint_names[idx] + ".cur_filter_gain";
       rclc_add_parameter(&param_server, param_name.c_str(), RCLC_PARAMETER_DOUBLE);
-      rclc_parameter_set_double(&param_server, param_name.c_str(), 0.1);
+      rclc_parameter_set_double(&param_server, param_name.c_str(), param.cur_filter_gain);
       rclc_add_parameter_constraint_double(&param_server, param_name.c_str(), 0.0, 1.0, 0.01);
     }
   }
@@ -401,7 +403,9 @@ bool on_parameter_changed(const Parameter * old_param, const Parameter * new_par
 void setup()
 {
   M5.begin(true, false, true);
-  // M5.Lcd.begin();
+  M5.Lcd.begin();
+  M5.Lcd.println("Start");
+
   motor_state_queue = xQueueCreate(1, sizeof(BufData));
 
   // Init communication interface
@@ -420,40 +424,41 @@ void setup()
 
   // Create executor
   // timer x 2
-  // joint_state perror_loopub x 1
+  // joint_state pub x 1
   // joint_command sub x 1
   // param server x RCLC_EXECUTOR_PARAMETER_SERVER_HANDLES
   executor = rclc_executor_get_zero_initialized_executor();
   rclc_executor_init(
-    &executor, &support.context, 4 + RCLC_EXECUTOR_PARAMETER_SERVER_HANDLES + 3, &allocator);
+    &executor, &support.context, 4 + RCLC_EXECUTOR_PARAMETER_SERVER_HANDLES + 4, &allocator);
 
-  // Create parameter service
-  // init msgs
+  // Create // init msgs
   init_joint_state_msg(&joint_state_msg, joint_names);
+  init_joint_state_msg(&joint_command_msg, joint_names);
 
   // pub sensor/joint_states
   rclc_publisher_init_default(
     &publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, JointState), "joint_state");
 
+  // sub sensor/joint_states
+  rclc_subscription_init_default(
+    &subscription, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, JointState),
+    "joint_command");
+
+  rclc_executor_add_subscription(
+    &executor, &subscription, &joint_command_msg, &joint_command_callback, ON_NEW_DATA);
+
   // // setup timers
   rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2), joint_state_timer_callback);
   rclc_executor_add_timer(&executor, &timer);
 
-  rclc_timer_init_default(&sync_timer, &support, RCL_MS_TO_NS(1000), ros2_sync_timer_callback);
+  rclc_timer_init_default(&sync_timer, &support, RCL_MS_TO_NS(2000), ros2_sync_timer_callback);
   rclc_executor_add_timer(&executor, &sync_timer);
 
   // Init parameter server
   init_motor_parameters();
   init_ros_param_server();
 
-  // sub sensor/joint_states
-  rclc_subscription_init_default(
-    &subscription, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, JointState),
-    "joint_command");
-  rclc_executor_add_subscription(
-    &executor, &subscription, &joint_command_msg, &joint_command_callback, ON_NEW_DATA);
-
-  // // motor control services
+  // motor control services
   rclc_service_init_default(
     &service, &node, ROSIDL_GET_SRV_TYPE_SUPPORT(std_srvs, srv, SetBool), "control_power");
   rclc_executor_add_service(&executor, &service, &req, &res, control_power_service_callback);
@@ -463,9 +468,9 @@ void setup()
   controller.init(motor_ids, MODE_CURRENT, &can_interface, 250);
 
   // create task
-  xTaskCreatePinnedToCore(ros2_task, "ros2_task", 1024 * 8, NULL, 1, &ros2_task_handle, 0);
+  xTaskCreatePinnedToCore(ros2_task, "ros2_task", 1024 * 4, NULL, 1, &ros2_task_handle, 0);
   xTaskCreatePinnedToCore(
-    motor_control_task, "motor_control_task", 1024 * 8, NULL, 1, &motor_control_task_handle, 1);
+    motor_control_task, "motor_control_task", 1024 * 4, NULL, 1, &motor_control_task_handle, 1);
 }
 
 void ros2_task(void * args)
