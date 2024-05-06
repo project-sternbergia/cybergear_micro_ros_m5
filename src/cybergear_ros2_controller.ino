@@ -403,8 +403,7 @@ bool on_parameter_changed(const Parameter * old_param, const Parameter * new_par
 void setup()
 {
   M5.begin(true, false, true);
-  M5.Lcd.begin();
-  M5.Lcd.println("Start");
+  // M5.Lcd.begin();
 
   motor_state_queue = xQueueCreate(1, sizeof(BufData));
 
