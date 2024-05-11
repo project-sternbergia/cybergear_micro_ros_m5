@@ -1,7 +1,9 @@
 #ifndef W5500_ETHERNET_TRANSPORT_H
 #define W5500_ETHERNET_TRANSPORT_H
 
-#define CS 26
+#ifdef CONFIG_IDF_TARGET_ESP32
+
+#define CS 19
 
 #include <Arduino.h>
 #include <EthernetUdp.h>
@@ -36,17 +38,7 @@ static inline void set_microros_w5500_ethernet_udp_transports(byte mac[], IPAddr
 		arduino_w5500_ethernet_udp_transport_write,
 		arduino_w5500_ethernet_udp_transport_read
 	);
-
-  // rcl_allocator_t freeRTOS_allocator = rcutils_get_zero_initialized_allocator();
-  // freeRTOS_allocator.allocate = microros_allocate;
-  // freeRTOS_allocator.deallocate = microros_deallocate;
-  // freeRTOS_allocator.reallocate = microros_reallocate;
-  // freeRTOS_allocator.zero_allocate =  microros_zero_allocate;
-
-  // if (!rcutils_set_default_allocator(&freeRTOS_allocator))
-  // {
-  //     // printf("Error on default allocators (line %d)\n", __LINE__);
-  // }
 }
 
-#endif
+#endif // CONFIG_IDF_TARGET_ESP32
+#endif // W5500_ETHERNET_TRANSPORT_H

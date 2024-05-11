@@ -6,13 +6,27 @@ This package is for controlling Cybergear on M5Stack. By using Micro-ROS, you ca
 
 ## Hardware Components
 
-![image](docs/img/hw_connection.jpg)
+**Case1 : M5Stack Basic**
+
+![image](docs/img/hw_connection_case1.jpg)
 
 * [Xiaomi Cybergear](https://www.mi.com/cyber-gear)
 * [M5Stack Basic V2.7](https://shop.m5stack.com/collections/m5-controllers/products/esp32-basic-core-lot-development-kit-v2-7)
 * [LAN Module W5500 with PoE V12](https://shop.m5stack.com/products/lan-module-w5500-with-poe-v12)
 * [XT30(2+2)-F](https://www.china-amass.com/product/contain/1Yf5h7G4u1927079)
 * [Grove Cable](https://www.seeedstudio.com/Grove-Universal-4-Pin-Buckled-20cm-Cable-5-PCs-pack.html)
+
+**Case2 : M5Stack AtomS3**
+
+![image](docs/img/hw_connection_case2.jpg)
+
+* [Xiaomi Cybergear](https://www.mi.com/cyber-gear)
+* [ATOMS3 Dev Kit w/ 0.85-inch Screen](https://shop.m5stack.com/products/atoms3-dev-kit-w-0-85-inch-screen?variant=43676991258881)
+* [ATOMIC PoE Base W5500](https://shop.m5stack.com/products/atomic-poe-base-w5500)
+* [Mini CAN Unit (TJA1051T/3)](https://shop.m5stack.com/products/mini-can-unit-tja1051t-3)
+* [XT30(2+2)-F](https://www.china-amass.com/product/contain/1Yf5h7G4u1927079)
+* [Grove Cable](https://www.seeedstudio.com/Grove-Universal-4-Pin-Buckled-20cm-Cable-5-PCs-pack.html)
+
 
 ## Dev Environments
 
@@ -29,14 +43,41 @@ git clone git@github.com:chikuta/cybergear_micro_ros_m5.git
 code cybergear_micro_ros_m5
 ```
 
+Change platformio environmnets as follows.
+
+| Module                     | env                      |
+| -------------------------- | ------------------------ |
+| M5Stack + LAN Module W5500 | env:m5stack-core-esp32   |
+| AtomS3 + LAN Module W5500  | env:m5stack-atoms3-esp32 |
+
+
 We need to modify and build micro_ros_arduino repository because resolve constraint of number of ros services.
 
 ```bash
 cd cybergear_micro_ros_m5
+
+# change directory name if necessary
+# IF YOU USE env:m5stack-core-esp32
 cd .pio/libdeps/m5stack-core-esp32/micro_ros_arduino
+
+# IF YOU USE env:m5stack-atoms3-esp32
+cd .pio/libdeps/m5stack-atoms3-esp32/micro_ros_arduino
+
 patch -p1 < ../../../../patch/colcon.meta.patch
 docker pull microros/micro_ros_static_library_builder:humble
 docker run -it --rm -v $(pwd):/project --env MICROROS_LIBRARY_FOLDER=extras microros/micro_ros_static_library_builder:humble -p esp32
+```
+
+Copy example file to src directory.
+
+```bash
+cd cybergear_micro_ros_m5/src
+
+# IF YOU USE env:m5stack-core-esp32
+cp examples/cybergear_ros2_controller_m5stack_core/cybergear_ros2_controller_m5stack_core.ino .
+
+# IF YOU USE env:m5stack-atoms3-esp32
+cp examples/cybergear_ros2_controller_m5stack_atoms3/cybergear_ros2_controller_m5stack_atoms3.ino .
 ```
 
 Build and upload binary to m5stack via vscode.

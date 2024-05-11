@@ -1,28 +1,26 @@
-#include "w5500_ethernet_transport.h"
-
-#ifdef CONFIG_IDF_TARGET_ESP32
-
+#include "w5500_m5_ethernet_transport.h"
+#ifdef CONFIG_IDF_TARGET_ESP32S3
 #include <Arduino.h>
-#include <Ethernet.h>
+#include <M5_Ethernet.h>
 #include <micro_ros_arduino.h>
 
 extern "C" {
 static EthernetUDP udp_client;
 
-bool arduino_w5500_ethernet_udp_transport_open(struct uxrCustomTransport * transport)
+bool arduino_w5500_m5_ethernet_udp_transport_open(struct uxrCustomTransport * transport)
 {
   struct micro_ros_agent_locator * locator = (struct micro_ros_agent_locator *)transport->args;
   udp_client.begin(locator->port);
   return true;
 }
 
-bool arduino_w5500_ethernet_udp_transport_close(struct uxrCustomTransport * transport)
+bool arduino_w5500_m5_ethernet_udp_transport_close(struct uxrCustomTransport * transport)
 {
   udp_client.stop();
   return true;
 }
 
-size_t arduino_w5500_ethernet_udp_transport_write(
+size_t arduino_w5500_m5_ethernet_udp_transport_write(
   struct uxrCustomTransport * transport, const uint8_t * buf, size_t len, uint8_t * errcode)
 {
   (void)errcode;
@@ -35,7 +33,7 @@ size_t arduino_w5500_ethernet_udp_transport_write(
   return sent;
 }
 
-size_t arduino_w5500_ethernet_udp_transport_read(
+size_t arduino_w5500_m5_ethernet_udp_transport_read(
   struct uxrCustomTransport * transport, uint8_t * buf, size_t len, int timeout, uint8_t * errcode)
 {
   (void)errcode;
@@ -49,4 +47,4 @@ size_t arduino_w5500_ethernet_udp_transport_read(
 }
 }
 
-#endif  // CONFIG_IDF_TARGET_ESP32
+#endif  // CONFIG_IDF_TARGET_ESP32S3

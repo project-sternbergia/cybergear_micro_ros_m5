@@ -183,7 +183,6 @@ void joint_state_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
   BaseType_t ret = xQueueReceive(motor_state_queue, &data, 0);
   if (ret != pdTRUE) return;
 
-  xQueueOverwrite(motor_state_queue, &data);
   joint_state_msg.header.stamp.sec = rmw_uros_epoch_millis() / 1000;
   joint_state_msg.header.stamp.nanosec = rmw_uros_epoch_nanos() % 1000000000UL;
   for (uint8_t idx = 0; idx < joint_names.size(); ++idx) {
